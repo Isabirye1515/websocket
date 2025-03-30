@@ -1,0 +1,22 @@
+{
+  "name": "xiexie",
+  "version": "1.0.0",
+  "description": "lets chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Isabirye1515/websocket.git"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Elijah_yang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Isabirye1515/websocket/issues"
+  },
+  "homepage": "https://github.com/Isabirye1515/websocket#readme"
+}
