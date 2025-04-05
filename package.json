@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/Isabirye1515/websocket/issues"
   },
-  "homepage": "https://github.com/Isabirye1515/websocket#readme"
+  "homepage": "https://github.com/Isabirye1515/websocket#readme",
+  "dependencies": {
+    "@carbon/react": "^1.79.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "sass": "^1.86.3"
+  }
 }
