@@ -1,16 +1,46 @@
 const express = require('express');
+const http = require('http');
 const cors = require('cors');
-const port = process.env.PORT || 4000;
+const WebSocket = require('ws');
 const app = express();
 app.use(cors({
-    origin: '*',
+    origin: ["http://localhost:3001", "http://localhost:3000"], // Array of allowed origins
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+const server = http.createServer(app); // shared server
+const wss = new WebSocket.Server({ server }); // attach WebSocket to the same server
+
+const clients = {};
+
+wss.on('connection', (ws) => {
+    const id = Date.now();
+    clients[id] = ws;
+
+    ws.on('message', (message) => {
+        console.log(`Message from client ${id}:`, message);
+
+        // Broadcast to other clients
+        Object.entries(clients).forEach(([clientId, clientWs]) => {
+            if (Number(clientId) !== id && clientWs.readyState === WebSocket.OPEN) {
+                clientWs.send(message);
+            }
+        });
+    });
+
+    ws.on('close', () => {
+        delete clients[id];
+    });
+});
+
+// Middleware
+app.use(cors());
 app.use(express.json());
+
+// HTTP Route
 app.get('/', (req, res) => {
-    res.json(
-        [
+    res.json( [
             {
                 "id": 1,
                 "name": "John Doe",
@@ -96,11 +126,11 @@ app.get('/', (req, res) => {
                 "bio": "Digital marketer and brand strategist."
             },
            
-        ]
-    );
-}
-);
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-}
-);
+        ]);
+});
+
+// Start server
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+    console.log(`Server (HTTP + WebSocket) running on port ${PORT}`);
+});

@@ -1,7 +1,65 @@
+.bod-1{
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+  align-items: center;
+  padding: 5px;
 
+}
+.name{
+  border: 1 solid #ddd;
+  border-radius: 10px;
+  background-color: #5492ee;
+  box-shadow: 0.1 0.1 0.1 #ddd;
+  padding: 10px;
+  
+  
+}
+.name:hover{
+  padding: 15px;
+  cursor: pointer;
+}
+@media  screen and (min-width:500px) {
+  .person{
+    display: flex;
+    flex-direction: row;
 
-.contact-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  }
+  
+}
+.screen{
+  min-height: 400px;
+  padding: 15px;
+  border: 2px solid #aa9e9e;
+  border-radius: 20px;
+  box-shadow: .1 0.01 0.5 #5e5858;
+  margin: 10px;
+  background-image: url("./static/a.jpg");
+  background-position: center;
+  object-fit: cover;
+  color: goldenrod;
+  overflow-y: auto;
+
+}
+
+.message {
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  max-width: 10%;
+  word-wrap: break-word;
+}
+
+.sent {
+  background-color: #d1e7ff;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.received {
+  background-color: #f1f1f1;
+  align-self: flex-start;
+  text-align: left;
 }
