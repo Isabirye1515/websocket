@@ -2,13 +2,15 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { getFromXiexie } from "../../content";
 import { Column, Form, Grid, TextInput } from "@carbon/react";
-import "../../App.css"; // Add custom styles if you want
+import "../../App.css";
 
 const Person = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // this will act as client ID
   const [person, setPerson] = useState(null);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]); // To store chat history
+  const [messages, setMessages] = useState([]);
+  const [onlineClients, setOnlineClients] = useState([]);
+  const [selectedReceiver, setSelectedReceiver] = useState(null);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -22,18 +24,34 @@ const Person = () => {
   }, [id]);
 
   useEffect(() => {
-    socketRef.current = new WebSocket("ws://localhost:4000");
+    socketRef.current = new WebSocket("ws://localhost:8080");
 
     socketRef.current.onopen = () => {
       console.log("WebSocket connected.");
+
+      socketRef.current.send(
+        JSON.stringify({
+          type: "register",
+          id: id,
+        })
+      );
     };
 
     socketRef.current.onmessage = (event) => {
-      // Add received message to the chat history
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "other", message: event.data },
-      ]);
+      try {
+        const msg = JSON.parse(event.data);
+
+        if (msg.type === "clients") {
+          setOnlineClients(msg.clients.filter((u) => String(u.id) !== id));
+        } else if (msg.type === "message") {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { sender: msg.from === id ? "me" : msg.from, message: msg.message },
+          ]);
+        }
+      } catch (err) {
+        console.error("Failed to parse message:", event.data);
+      }
     };
 
     socketRef.current.onclose = () => {
@@ -43,20 +61,24 @@ const Person = () => {
     return () => {
       socketRef.current.close();
     };
-  }, []);
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (socketRef.current && message.trim()) {
-      // Send the message to the WebSocket server
-      socketRef.current.send(message);
+    if (socketRef.current && message.trim() && selectedReceiver) {
+      socketRef.current.send(
+        JSON.stringify({
+          type: "message",
+          to: selectedReceiver,
+          message,
+        })
+      );
 
-      // Add the sent message to the chat history
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "me", message: message },
+        { sender: "me", message },
       ]);
-      setMessage(""); // Clear input field after sending
+      setMessage("");
     }
   };
 
@@ -86,20 +108,21 @@ const Person = () => {
         <Column lg={16} sm={4} md={8}>
           <Column lg={8} sm={4} md={4}>
             <div className="screen">
-              Talk with {person.name}
+              <p>Talk with {person.name}</p>
               {messages.map((msg, index) => (
                 <div
                   key={index}
                   className={`message ${msg.sender === "me" ? "sent" : "received"}`}
                 >
-                  <p>{msg.message}</p>
+                  <p>
+                    <strong>{msg.sender === "me" ? "You" : msg.sender}:</strong> {msg.message}
+                  </p>
                 </div>
               ))}
             </div>
           </Column>
 
           <Column lg={8} sm={4} md={4} className="bod-1">
-
             <Form onSubmit={handleSubmit}>
               <TextInput
                 name="message"
@@ -109,6 +132,19 @@ const Person = () => {
                 size="sm"
                 onChange={(e) => setMessage(e.target.value)}
               />
+              <select
+                value={selectedReceiver || ""}
+                onChange={(e) => setSelectedReceiver(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select a user to message
+                </option>
+                {onlineClients.map((client) => (
+                  <option key={client.id} value={client.id}>
+                    {client.name}
+                  </option>
+                ))}
+              </select>
               <button type="submit">Send</button>
             </Form>
           </Column>

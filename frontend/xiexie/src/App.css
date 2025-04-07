@@ -6,13 +6,14 @@
   margin: 10px;
   align-items: center;
   padding: 5px;
+  box-shadow: 0.01rem 0.01rem 0.01rem 0.01rem #faf7f7;
 
 }
 .name{
   border: 1 solid #ddd;
   border-radius: 10px;
   background-color: #5492ee;
-  box-shadow: 0.1 0.1 0.1 #ddd;
+  box-shadow: 0.01rem 0.01rem 0.01rem 0.01rem #faf7f7;
   padding: 10px;
   
   
@@ -33,14 +34,25 @@
   min-height: 400px;
   padding: 15px;
   border: 2px solid #aa9e9e;
-  border-radius: 20px;
-  box-shadow: .1 0.01 0.5 #5e5858;
+  border-radius: 5px;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #faf7f7;
   margin: 10px;
   background-image: url("./static/a.jpg");
   background-position: center;
   object-fit: cover;
   color: goldenrod;
   overflow-y: auto;
+
+}
+.guide{
+  min-height: 400px;
+  padding: 15px;
+  border: 2px solid #aa9e9e;
+  box-shadow: 0.01rem 0.01rem 0.01rem 0.01rem #faf7f7;
+  margin: 10px;
+  color: rgb(64, 82, 97);
+  overflow-y: auto;
+  font-family: 'Times New Roman', Times, serif;
 
 }
 
@@ -62,4 +74,51 @@
   background-color: #f1f1f1;
   align-self: flex-start;
   text-align: left;
+}
+
+.register{
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0.01rem 0.01rem 0.01rem #ddd;
+  padding: 20px;
+  
+
+}
+.form{
+  margin-bottom: 50px;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #ddd;
+}
+.document{
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #ddd;
+  padding:10px;
+  margin:5px;
+}
+.App{
+  background-color: #eee2e2;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #ddd;
+}
+.header{
+  background-color: #402daa;
+  font-family: 'Times New Roman', Times, serif;
+  height: 10%;
+  color: white;
+  
+}
+.title{
+  color: #d1e7ff;
+}
+.icon{
+  background-color: #e7dada;
+  padding: 1px;
+  border-radius: 10px;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #ddd;
+
+}
+.person{
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0.01rem 0.01rem 0.01rem 0.01rem #faf7f7;
+  padding: 5px;
+  font-family: 'Times New Roman', Times, serif;
 }
